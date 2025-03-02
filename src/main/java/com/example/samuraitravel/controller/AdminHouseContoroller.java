@@ -81,17 +81,17 @@ public class AdminHouseContoroller {
 	
 	//民宿を登録するメソッド
 	@PostMapping("/create")
-	public String create(@ModelAttribute @Validated HouseRegisterForm houseRegister, // フォームから送信されたデータを受け取る
+	public String create(@ModelAttribute @Validated HouseRegisterForm houseRegisterForm, // フォームから送信されたデータを受け取る
 						 BindingResult bindingResult, // バリデーション結果を格納するオブジェクト
 						 RedirectAttributes redirectAttributes, // リダイレクト時にメッセージを渡すためのオブジェクト
 						 Model model) // ビューにデータを渡すためのオブジェクト
 	{
 		if(bindingResult.hasErrors()) { // バリデーションエラーがある場合
-			model.addAttribute("houseRegisterForm, houseRegisterForm"); // エラーメッセージと共にフォームを再表示
+			model.addAttribute("houseRegisterForm", houseRegisterForm); // エラーメッセージと共にフォームを再表示
 			return "admin/houses/register"; // 登録ページに戻る
 		}
 		
-		houseService.createHouse(houseRegister); // 民宿を登録するサービスメソッドを呼び出す
+		houseService.createHouse(houseRegisterForm); // 民宿を登録するサービスメソッドを呼び出す
 		redirectAttributes.addFlashAttribute("successMessage","民宿を登録しました。"); // 成功メッセージをリダイレクト先に渡す
 		
 		return "redirect:/admin/houses"; // 民宿一覧ページにリダイレクト

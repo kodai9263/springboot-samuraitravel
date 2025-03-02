@@ -1,5 +1,6 @@
 package com.example.samuraitravel.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -10,21 +11,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.samuraitravel.entity.House;
+import com.example.samuraitravel.entity.Review;
 import com.example.samuraitravel.form.ReservationInputForm;
 import com.example.samuraitravel.service.HouseService;
+import com.example.samuraitravel.service.ReviewService;
 
 @Controller
 @RequestMapping("/houses")
 public class HouseController {
 	private final HouseService houseService;
+	private final ReviewService reviewService;
 	
-	public HouseController(HouseService houseService) {
+	public HouseController(HouseService houseService, ReviewService reviewService) {
 		this.houseService = houseService;
+		this.reviewService = reviewService;
 	}
 
 	
@@ -75,6 +81,7 @@ public class HouseController {
 	@GetMapping("/{id}")
 	public String show(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model) {
 		Optional<House> optionalHouse = houseService.findHouseById(id);
+		List<Review> reviews = reviewService.findReviewByHouseIdOrderByCreatedAtDesc(id);
 		
 		if(optionalHouse.isEmpty()) {
 			redirectAttributes.addFlashAttribute("errorMessage", "民宿が存在しません。");
@@ -85,7 +92,25 @@ public class HouseController {
 		House house = optionalHouse.get();
 		model.addAttribute("house", house);
 		model.addAttribute("reservationInputForm", new ReservationInputForm());
+		model.addAttribute("reviews", reviews);
 		
 		return "houses/show";
+	}
+	
+	//レビューを削除
+	@PostMapping("/{id}/delete")
+	public String delete(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Review review) {
+		Optional<Review> optionalReview = reviewService.findReviewById(review.getId());
+		
+		if(optionalReview.isEmpty()) {
+			redirectAttributes.addFlashAttribute("errorMessage", "レビューが存在しません。");
+			
+			return "redirect:/houses/" + id;
+		}
+		
+		reviewService.deleteReview(review);
+		redirectAttributes.addFlashAttribute("successMessage", "レビューを削除しました。");
+		
+		return "redirect:/houses/" + id;
 	}
 }

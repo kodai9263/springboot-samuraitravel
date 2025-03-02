@@ -35,6 +35,10 @@ footer {
  background-color: #f2f0eb;
 }
 
+option {
+  background-color: #FFA500;
+}
+
 .samuraitravel-wrapper {
  min-height: 100vh;
  position: relative;
@@ -172,6 +176,24 @@ footer {
 .samuraitravel-accordion-body:active {
   background-color: #5196a6;
   color: #ffffff;
+}
+
+.samuraitravel-score {
+  color: #FFA500;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: auto;
+  gap: 20px;
+}
+
+.review-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #fff;
 }
 
 @media screen and (min-width: 1400px) {

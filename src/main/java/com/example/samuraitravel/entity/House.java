@@ -19,7 +19,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "houses")
 @Data 
-@ToString(exclude = "reservations")
+@ToString(exclude = {"reservations", "reviews"})
 public class House {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +56,11 @@ public class House {
 	@Column(name = "updated_at", insertable = false, updatable = false)
 	private Timestamp updatedAt;
 
-	// Houseエンティティが削除されると、関連するReservationエンティティも自動的に削除されます。
+	// Houseエンティティが削除されると、関連するReservationエンティティも自動的に削除される
 	@OneToMany(mappedBy = "house", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<Reservation> reservations;
+	
+	//　// Houseエンティティが削除されると、関連するReviewエンティティも自動的に削除される
+	@OneToMany(mappedBy = "house", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<Review> reviews;
 }

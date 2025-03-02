@@ -153,7 +153,7 @@ public class ReservationController {
 		ReservationDTO reservationDTO = (ReservationDTO)httpSession.getAttribute("reservationDTO");
 		
 		if(reservationDTO == null) {
-			redirectAttributes.addFlashAttribute("errorMessage", "セッションがタイムアウトしました。もう一度予約内容をにゅりょくしてください。");
+			redirectAttributes.addFlashAttribute("errorMessage", "セッションがタイムアウトしました。もう一度予約内容を入力してください。");
 			
 			return "redirect:/houses";
 		}
