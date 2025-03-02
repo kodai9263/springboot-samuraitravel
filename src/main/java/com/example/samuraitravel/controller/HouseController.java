@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.samuraitravel.entity.House;
 import com.example.samuraitravel.entity.Review;
+import com.example.samuraitravel.entity.User;
 import com.example.samuraitravel.form.ReservationInputForm;
+import com.example.samuraitravel.security.UserDetailsImpl;
 import com.example.samuraitravel.service.HouseService;
 import com.example.samuraitravel.service.ReviewService;
 
@@ -79,7 +82,9 @@ public class HouseController {
 	}
 	
 	@GetMapping("/{id}")
-	public String show(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model) {
+	public String show(@PathVariable(name = "id") Integer id, 
+					   @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+					   RedirectAttributes redirectAttributes, Model model) {
 		Optional<House> optionalHouse = houseService.findHouseById(id);
 		List<Review> reviews = reviewService.findReviewByHouseIdOrderByCreatedAtDesc(id);
 		
@@ -93,6 +98,17 @@ public class HouseController {
 		model.addAttribute("house", house);
 		model.addAttribute("reservationInputForm", new ReservationInputForm());
 		model.addAttribute("reviews", reviews);
+		
+		//ユーザーの情報を取得
+		User user = (userDetailsImpl != null) ? userDetailsImpl.getUser() : null;
+		
+		//ユーザーがすでにレビューを投稿しているかの確認
+		boolean hasPostedReview = false;
+		if(user != null) {
+			hasPostedReview = reviewService.hasUserPostedReview(id, user.getId());
+		}
+		
+		model.addAttribute("hasPostedReview", hasPostedReview);
 		
 		return "houses/show";
 	}

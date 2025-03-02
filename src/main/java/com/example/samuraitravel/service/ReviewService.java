@@ -40,6 +40,11 @@ public class ReviewService {
 		return reviewRepository.findById(reviewId);
 	}
 	
+	//データベースからユーザーのレビューを検索し、存在するかどうかを調べる
+	public boolean hasUserPostedReview(Integer houseId, Integer userId) {
+		return reviewRepository.existsByHouseIdAndUserId(houseId, userId);
+	}
+	
 	//レビューを登録するメソッド
 	@Transactional
 	public void createReview(ReviewInputForm reviewRegisterForm, User user) {
