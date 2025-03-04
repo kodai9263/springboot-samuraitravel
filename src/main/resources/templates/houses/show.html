@@ -18,12 +18,27 @@
                 <div class="container pt-4 pb-5 samuraitravel-container">
                     <div class="row justify-content-center">
                         <div class="col-xxl-9 col-xl-10 col-lg-11">
-                            <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <nav class="mb-4 d-flex align-items-center" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
                                     <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
                                     <li class="breadcrumb-item"><a th:href="@{/houses}">民宿一覧</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">民宿詳細</li>
                                 </ol>
+
+                                <div sec:authorize="isAuthenticated()" class="ms-auto">
+                                    <form th:action="@{/houses/__${house.id}__/favorite}" method="post" th:if="${!hasFavorited}">
+                                        <button type="submit" class="favorite-button">
+                                            <span class="favorit-icon">&#9825;</span>
+                                            <span>お気に入り追加</span>
+                                        </button>
+                                    </form>
+                                    <form th:action="@{/houses/__${house.id}__/unfavorite}" method="post" th:if="${hasFavorited}">
+                                        <button type="submit" class="favorite-button">
+                                            <span class="favorit-icon">&#9829;</span>
+                                            <span>お気に入り解除</span>
+                                        </button>
+                                    </form> 
+                                </div>
                             </nav>
 
                             <h1 class="mb-4 text-center" th:text="${house.name}"></h1>
@@ -192,8 +207,8 @@
                                                 </div>
                                             </div>
                                             <p class="text-left">
-                                                <span class="samuraitravel-score" th:each="i : ${#numbers.sequence(1, review.score)}">&#9733;</span>
-                                                <span class="samuraitravel-score" th:each="i : ${#numbers.sequence(review.score + 1, 5)}" th:if="${review.score < 5}">&#9734;</span>
+                                                <span class="samuraitravel-star" th:each="i : ${#numbers.sequence(1, review.score)}">&#9733;</span>
+                                                <span class="samuraitravel-star" th:each="i : ${#numbers.sequence(review.score + 1, 5)}" th:if="${review.score < 5}">&#9734;</span>
                                             </p>
                                             <p class="text-muted text-left" th:text="${#dates.format(review.createdAt, 'yyyy年MM月dd日')}"></p>
                                             <p class="text-left" th:text="${review.comment}"></p>      

@@ -19,7 +19,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "houses")
 @Data 
-@ToString(exclude = {"reservations", "reviews"})
+@ToString(exclude = {"reservations", "reviews", "favorites"})
 public class House {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,7 +60,11 @@ public class House {
 	@OneToMany(mappedBy = "house", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<Reservation> reservations;
 	
-	//　// Houseエンティティが削除されると、関連するReviewエンティティも自動的に削除される
+	// Houseエンティティが削除されると、関連するReviewエンティティも自動的に削除される
 	@OneToMany(mappedBy = "house", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<Review> reviews;
+	
+	// Houseエンティティが削除されると、関連するFavoriteエンティティも自動的に削除される
+	@OneToMany(mappedBy = "house", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) 
+	private List<Favorite> favorites;
 }

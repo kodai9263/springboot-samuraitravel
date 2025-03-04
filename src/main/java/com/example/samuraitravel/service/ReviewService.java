@@ -32,7 +32,7 @@ public class ReviewService {
 
 	//すべてのレビューをページングされた状態で取得するメソッド
 	public Page<Review> findlReviewByHouseId(Integer houseId, Pageable pageable) {
-		return reviewRepository.findReviewsByHouseId(houseId,pageable);
+		return reviewRepository.findByHouseId(houseId,pageable);
 	}
 	
 	//指定したidを持つレビューを取得する

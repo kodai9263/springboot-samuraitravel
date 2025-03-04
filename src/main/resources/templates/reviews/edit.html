@@ -36,13 +36,13 @@
                         </div>
                         <div class="col-md-4">
                           <div th:if="${#fields.hasErrors('score')}" class="text-danger" th:errors="*{score}"></div>
-                          <select class="form-control" th:field="*{score}">
-                            <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
-                            <option value="1">&#9733</option>
-                            <option value="2">&#9733;&#9733</option>
-                            <option value="3">&#9733;&#9733;&#9733</option>
-                            <option value="4">&#9733;&#9733;&#9733;&#9733</option>
-                            <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733</option>
+                          <select class="form-select samuraitravel-star" th:field="*{score}">
+                            <option class="samuraitravel-star" value="5" selected>&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+                            <option class="samuraitravel-star" value="1">&#9733</option>
+                            <option class="samuraitravel-star" value="2">&#9733;&#9733</option>
+                            <option class="samuraitravel-star" value="3">&#9733;&#9733;&#9733</option>
+                            <option class="samuraitravel-star" value="4">&#9733;&#9733;&#9733;&#9733</option>
+                            <option class="samuraitravel-star" value="5">&#9733;&#9733;&#9733;&#9733;&#9733</option>
                           </select>
                         </div>
                       </div>

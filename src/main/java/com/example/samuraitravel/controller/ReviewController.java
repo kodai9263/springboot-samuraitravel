@@ -56,7 +56,7 @@ public class ReviewController {
 		model.addAttribute("user", user);
 		
 		//レビュー情報を取得
-		Page<Review> reviewPage = reviewService.findlReviewByHouseId(houseId,pageable);
+		Page<Review> reviewPage = reviewService.findlReviewByHouseId(houseId, pageable);
 		model.addAttribute("reviewPage", reviewPage);
 		
 		return "reviews/index";
